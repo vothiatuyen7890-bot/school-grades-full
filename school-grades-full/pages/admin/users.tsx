@@ -11,7 +11,25 @@ export default function AdminUsers(){
     const res = await fetch('/api/admin/users',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({ email, name, password, role })});
     if (res.ok) { alert('Created'); const u = await res.json(); setUsers([u, ...users]); } else alert('Failed');
   }
+  <button
+  className="px-3 py-1 bg-blue-600 text-white rounded"
+  onClick={() => {
+      setEditUser(user); // lưu vào state
+      setShowEdit(true); // mở modal
+  }}
+>
+  Edit
+</button>
 
+<button
+  className="px-3 py-1 bg-red-600 text-white rounded ml-2"
+  onClick={async () => {
+      await fetch(`/api/admin/users/${user.id}`, { method: "DELETE" });
+      refreshUsers(); // reload list
+  }}
+>
+  Delete
+</button>
   return <main className="p-6 max-w-4xl mx-auto">
     <h1 className="text-2xl mb-4">Manage Users</h1>
     <form onSubmit={create} className="grid grid-cols-4 gap-2 mb-4">
